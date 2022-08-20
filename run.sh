@@ -76,7 +76,7 @@ function display_help {
     echo "    cs-check          Code Format Check: php" >&2
     echo "    cs-fix            Code Format Fix: php" >&2
     echo "    phpmd             Coding Check: phpmd" >&2
-    # echo "    larastan          Coding Check: phpstan" >&2
+    echo "    larastan          Coding Check: phpstan" >&2
     echo "    test              Run phpunit" >&2
     echo "    test-coverage     Run phpunit(Coverage)" >&2
     echo "" >&2
@@ -224,7 +224,7 @@ elif [ "$1" == "ci" ]; then
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpcbf --standard=phpcs.xml
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpcs --standard=phpcs.xml
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
-#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
+    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} bash -c "export XDEBUG_MODE=off && php artisan test"
 
 elif [ "$1" == "cs-check" ]; then
@@ -237,8 +237,8 @@ elif [ "$1" == "cs-fix" ]; then
 elif [ "$1" == "phpmd" ]; then
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
 
-# elif [ "$1" == "larastan" ]; then
-#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
+elif [ "$1" == "larastan" ]; then
+    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
 
 elif [ "$1" == "test" ]; then
     shift 1

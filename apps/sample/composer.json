@@ -21,6 +21,7 @@
         "laravel/ui": "^4.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.1",
         "phpmd/phpmd": "^2.12",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0",
