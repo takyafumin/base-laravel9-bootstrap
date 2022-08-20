@@ -6,12 +6,12 @@
 #   alias r='[ -f run.sh ] && bash run.sh'
 #
 
-DIR_PROJECT=apps/sample                                     # Laravel Project Project
-APP_CONTAINER=app                                           # Laravel PHP Container Name
-APP_USER=sail                                               # Laravel Container exec user
-MYSQL_CONTAINER=mysql                                       # Mysql Container Name
-DOCKER_VOLUME_VENDOR=backend_laravel9-php-vendor            # docker volume for composer
-DOCKER_VOLUME_NODE_MODULES=backend_laravel9-node-modules    # docker volume for node modules
+DIR_PROJECT=apps/sample                                             # Laravel Project Project
+APP_CONTAINER=app                                                   # Laravel PHP Container Name
+APP_USER=sail                                                       # Laravel Container exec user
+MYSQL_CONTAINER=mysql                                               # Mysql Container Name
+DOCKER_VOLUME_VENDOR=sample_laravel9-bootstrap5-php-vendor          # docker volume for composer
+DOCKER_VOLUME_NODE_MODULES=sample_laravel9-bootstrap5-node-modules  # docker volume for node modules
 
 
 OSTYPE="$(uname -s)"
@@ -102,7 +102,7 @@ function install_modules {
 #------------------
 function copy_to_local {
     docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_VENDOR}:/vendor alpine:latest sh -c "cp -vrT /vendor /host/vendor && chown -R 1000:1000 /host/vendor"
-    # docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_NODE_MODULES}:/node_modules alpine:latest sh -c "cp -vrT /node_modules /host/node_modules && chown -R 1000:1000 /host/node_modules"
+    docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_NODE_MODULES}:/node_modules alpine:latest sh -c "cp -vrT /node_modules /host/node_modules && chown -R 1000:1000 /host/node_modules"
 }
 
 #------------------
