@@ -92,8 +92,9 @@ function display_help {
 # install_modules(composer, node)
 #------------------
 function install_modules {
-    ${CMD_DOCKER} exec -u root ${APP_CONTAINER} sh -c "composer install && chown -R 1000:1000 ."
-    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} npm ci
+    # ${CMD_DOCKER} exec -u root ${APP_CONTAINER} sh -c "composer install && chown -R 1000:1000 ."
+    # ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} npm ci
+    echo "no actions"
 }
 
 #------------------
@@ -101,14 +102,13 @@ function install_modules {
 #------------------
 function copy_to_local {
     docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_VENDOR}:/vendor alpine:latest sh -c "cp -vrT /vendor /host/vendor && chown -R 1000:1000 /host/vendor"
-    docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_NODE_MODULES}:/node_modules alpine:latest sh -c "cp -vrT /node_modules /host/node_modules && chown -R 1000:1000 /host/node_modules"
+    # docker run --rm -it -v $(pwd):/host -v ${DOCKER_VOLUME_NODE_MODULES}:/node_modules alpine:latest sh -c "cp -vrT /node_modules /host/node_modules && chown -R 1000:1000 /host/node_modules"
 }
 
 #------------------
 # cleanup local resources
 #------------------
 function clean_local {
-    #git clean -fx
     rm -rf vendor/*
     rm -rf node_modules/* node_modules/.bin node_modules/.package-lock.json node_modules/.cache
 }
@@ -179,7 +179,8 @@ elif [ "$1" == "up" ]; then
     ${CMD_DOCKER} up -d
 
 elif [ "$1" == "down" ]; then
-    ${CMD_DOCKER} down
+    shift 1;
+    ${CMD_DOCKER} down $@
 
 elif [ "$1" == "ps" ]; then
     ${CMD_DOCKER} ps
