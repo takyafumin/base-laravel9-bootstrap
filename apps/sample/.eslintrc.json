@@ -1,0 +1,19 @@
+{
+    "env": {
+        "browser": true, // グローバルオブジェクト「window」とかが書けるようになる。
+        "commonjs": true, // 「reauire」とかが書けるようになる。
+        "es6": true // ES6の構文が書けるようになる。
+    },
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "parserOptions": {
+        "sourceType": "module" // 「import」構文とか書けるようになる。
+    },
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true
+            }
+        ]
+    }
+}

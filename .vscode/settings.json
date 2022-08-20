@@ -1,0 +1,7 @@
+{
+	"eslint.enable": true,
+	"eslint.nodePath": "${workspaceRoot}/apps/sample/node_modules",
+	"eslint.options": {
+		"overrideConfigFile": "./apps/sample/.eslintrc.json"
+	}
+}
