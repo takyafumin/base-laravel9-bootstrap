@@ -59,7 +59,6 @@ function display_help {
     echo "    clean-local       Cleanup local resources(exec git clean -nx & remove [vendor/*, node_modules/*])" >&2
     echo "" >&2
     echo "  [for Development]" >&2
-    echo "    up                Exec docker compose up(background)" >&2
     echo "    down              Exec docker compose down" >&2
     echo "    ps                Exec docker compose ps" >&2
     echo "    artisan [command] Exec artisan command" >&2
@@ -76,8 +75,8 @@ function display_help {
     echo "    ci                Exec CI" >&2
     echo "    cs-check          Code Format Check: php" >&2
     echo "    cs-fix            Code Format Fix: php" >&2
-    echo "    phpmd             Coding Check: phpmd" >&2
-    echo "    larastan          Coding Check: phpstan" >&2
+    # echo "    phpmd             Coding Check: phpmd" >&2
+    # echo "    larastan          Coding Check: phpstan" >&2
     echo "    test              Run phpunit" >&2
     echo "    test-coverage     Run phpunit(Coverage)" >&2
     echo "" >&2
@@ -92,9 +91,8 @@ function display_help {
 # install_modules(composer, node)
 #------------------
 function install_modules {
-    # ${CMD_DOCKER} exec -u root ${APP_CONTAINER} sh -c "composer install && chown -R 1000:1000 ."
-    # ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} npm ci
-    echo "no actions"
+    ${CMD_DOCKER} exec -u root ${APP_CONTAINER} sh -c "composer install && chown -R 1000:1000 ."
+    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} npm ci
 }
 
 #------------------
@@ -109,8 +107,8 @@ function copy_to_local {
 # cleanup local resources
 #------------------
 function clean_local {
-    rm -rf vendor/*
-    rm -rf node_modules/* node_modules/.bin node_modules/.package-lock.json node_modules/.cache
+    rm -rf vendor/
+    rm -rf node_modules/
 }
 
 # プロジェクトディレクトリに移動
@@ -175,9 +173,6 @@ elif [ "$1" == "destroy-all" ]; then
     clean_local
     echo "complete destroy all."
 
-elif [ "$1" == "up" ]; then
-    ${CMD_DOCKER} up -d
-
 elif [ "$1" == "down" ]; then
     shift 1;
     ${CMD_DOCKER} down $@
@@ -228,8 +223,8 @@ elif [ "$1" == "npm-watch" ]; then
 elif [ "$1" == "ci" ]; then
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpcbf --standard=phpcs.xml
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpcs --standard=phpcs.xml
-    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
-    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
+#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
+#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} bash -c "export XDEBUG_MODE=off && php artisan test"
 
 elif [ "$1" == "cs-check" ]; then
@@ -239,11 +234,11 @@ elif [ "$1" == "cs-check" ]; then
 elif [ "$1" == "cs-fix" ]; then
     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpcbf --standard=phpcs.xml
 
-elif [ "$1" == "phpmd" ]; then
-    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
+# elif [ "$1" == "phpmd" ]; then
+#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpmd app/ text phpmd.xml
 
-elif [ "$1" == "larastan" ]; then
-    ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
+# elif [ "$1" == "larastan" ]; then
+#     ${CMD_DOCKER} exec -u ${APP_USER} ${APP_CONTAINER} vendor/bin/phpstan analyze
 
 elif [ "$1" == "test" ]; then
     shift 1

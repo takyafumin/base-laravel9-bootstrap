@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<ruleset name="My PHP Rule">
+    <!-- 以下のルールを基本として個別に除外ルールを適用 -->
+    <!-- ・PSR12-->
+    <!-- ・CakePHP-->
+
+
+    <!-- Config  -->
+    <config name="installed_paths" value="../../cakephp/cakephp-codesniffer" />
+
+    <!-- File pattern -->
+    <file>app/</file>
+    <file>tests/</file>
+
+    <!-- Args -->
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="75"/>
+    <arg value="nps"/>
+
+    <!-- Base Rules -->
+    <rule ref="PSR12">
+        <exclude name="Generic.Commenting.DocComment.NonParamGroup" />
+        <exclude name="Generic.Commenting.DocComment.ShortNotCapital" />
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent" />
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen" />
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose" />
+        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName" />
+        <exclude name="SlevomatCodingStandard.Commenting.DisallowOneLinePropertyDocComment.OneLinePropertyComment" />
+        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBeforeDeclare" />
+    </rule>
+    <rule ref="CakePHP">
+        <exclude name="CakePHP.WhiteSpace.TabAndSpace.DoubleSpace" />
+        <exclude name="CakePHP.NamingConventions.ValidTraitName.InvalidTraitName" />
+    </rule>
+    <rule ref="PEAR.Commenting.ClassComment">
+        <exclude name="PEAR.Commenting.ClassComment.MissingCategoryTag" />
+        <exclude name="PEAR.Commenting.ClassComment.MissingPackageTag" />
+        <exclude name="PEAR.Commenting.ClassComment.MissingLinkTag" />
+        <exclude name="PEAR.Commenting.ClassComment.MissingAuthorTag" />
+        <exclude name="PEAR.Commenting.ClassComment.MissingLicenseTag" />
+    </rule>
+
+    <!-- app/Enums で利用しているTraitは同Enum内での利用ではなくEnumの利用側での利用を想定しているため UnUsedUseでも許可する -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UnusedUses.UnusedUse">
+        <exclude-pattern>app/Enums/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing.IncorrectLinesCountBeforeFirstUse">
+        <exclude-pattern>app/Enums/*</exclude-pattern>
+    </rule>
+
+    <!-- app/Models では変数名にCamelCaps以外(snamecaseなど)を特別に認める -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>app/Models/*</exclude-pattern>
+    </rule>
+    <rule ref="PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps">
+        <exclude-pattern>app/Models/*</exclude-pattern>
+    </rule>
+
+    <!-- tests/ ではFunction名を自由につけて良い -->
+    <rule ref="PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+
+
+    <!-- Array -->
+    <rule ref="Generic.Arrays.ArrayIndent" />
+
+    <!-- Lines can be N chars long (warnings), errors at M chars -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="200"/>
+        </properties>
+    </rule>
+</ruleset>
