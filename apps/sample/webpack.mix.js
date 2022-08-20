@@ -18,3 +18,6 @@ mix.js('resources/js/app.js', 'public/js')
         extensions: ['js'],
     })
     .sass('resources/sass/app.scss', 'public/css', []);
+
+// ソースマップ生成
+mix.sourceMaps(false, 'eval-source-map');
